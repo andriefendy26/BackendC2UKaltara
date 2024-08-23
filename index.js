@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const db = require("./config/database");
+const fileUpload = require("express-fileupload");
+
 require("dotenv").config();
 
 //route
@@ -11,6 +13,8 @@ const RoleRoute = require("./routes/RoleRoute");
 const DataRoute = require("./routes/DataSampahRoute");
 const LogbookRoute = require("./routes/LogbookRoute");
 const AuthRoute = require("./routes/AuthRoute");
+const BeritaRoute = require("./routes/BeritaRoute");
+const KelurahanRoute = require("./routes/KelurahanRoute");
 
 const app = express();
 
@@ -36,12 +40,17 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
+app.use(fileUpload());
+app.use(express.static("public"));
+
 app.use(express.json());
 app.use(UserRoute);
 app.use(RoleRoute);
 app.use(DataRoute);
 app.use(LogbookRoute);
 app.use(AuthRoute);
+app.use(BeritaRoute);
+app.use(KelurahanRoute);
 
 // store.sync();
 
