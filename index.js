@@ -5,17 +5,27 @@ const session = require("express-session");
 const db = require("./config/database");
 require("dotenv").config();
 
+//route
 const UserRoute = require("./routes/UserRoute");
 const RoleRoute = require("./routes/RoleRoute");
 const DataRoute = require("./routes/DataSampahRoute");
+const LogbookRoute = require("./routes/LogbookRoute");
+const AuthRoute = require("./routes/AuthRoute");
 
 const app = express();
+
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+
+const store = new SequelizeStore({
+  db: db,
+});
 
 app.use(
   session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: store,
     cookie: { secure: "auto" },
   })
 );
@@ -27,27 +37,31 @@ app.use(
   })
 );
 app.use(express.json());
-// app.use(UserRoute);
-// app.use(RoleRoute);
-// app.use(DataRoute);
-// app.listen(process.env.APP_PORT, () => {
-//   console.log(`Server running....`);
-// });
+app.use(UserRoute);
+app.use(RoleRoute);
+app.use(DataRoute);
+app.use(LogbookRoute);
+app.use(AuthRoute);
+
+// store.sync();
 
 // Start the server
 (async () => {
   try {
-    db.authenticate()
-      .then(() => {
-        console.log("Connection has been established successfully.");
-      })
-      .catch((err) => {
-        console.error("Unable to connect to the database:", err);
-      });
+    //memeriksa koneksi ke DBMS
 
-    await db.sync({ force: true });
-    console.log("Database synchronized successfully.");
+    // db.authenticate()
+    //   .then(() => {
+    //     console.log("Connection has been established successfully.");
+    //   })
+    //   .catch((err) => {
+    //     console.error("Unable to connect to the database:", err);
+    //   });
 
+    //menyingkronkan database
+
+    // await db.sync();
+    // console.log("Database synchronized successfully.");
     app.listen(process.env.APP_PORT, () => {
       console.log(`Server running on port ${process.env.APP_PORT}`);
     });

@@ -4,8 +4,8 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-// const Kelurahan = require("./KelurahanModel");
-// const Roles = require("./RolesModel");
+const Kelurahan = require("./KelurahanModel");
+const Roles = require("./RolesModel");
 
 const Users = db.define(
   "tb_users",
@@ -52,7 +52,7 @@ const Users = db.define(
   }
 );
 
-// Users.hasOne(Roles, { foreignKey: "roleID" });
-// Users.hasOne(Kelurahan, { foreignKey: "kelurahanID" });
+Users.belongsTo(Roles, { foreignKey: "roleID" });
+Users.belongsTo(Kelurahan, { foreignKey: "kelurahanID" });
 
 module.exports = Users;

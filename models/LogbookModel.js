@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/database");
+const Kelurahan = require("./KelurahanModel");
 
 const Logbook = db.define("tb_logbook", {
   nama: {
@@ -22,6 +23,13 @@ const Logbook = db.define("tb_logbook", {
     type: DataTypes.DATE,
     allowNull: false,
   },
+  kelurahanID: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
+
+// Logbook.hasOne(Kelurahan);
+Logbook.belongsTo(Kelurahan, { foreignKey: "kelurahanID" });
 
 module.exports = Logbook;

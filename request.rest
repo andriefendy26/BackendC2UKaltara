@@ -1,0 +1,15 @@
+###
+POST http://localhost:3000/login
+content-type: application/json
+
+{
+  "email" : "andri@gmail.com",
+  "password" : "andr1234"
+}
+
+###
+GET http://localhost:3000/onlogin
+
+
+###
+DELETE http://localhost:3000/logout
