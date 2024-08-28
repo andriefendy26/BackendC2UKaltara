@@ -9,10 +9,12 @@ const {
 
 const router = express.Router();
 
+const { VerifyUser } = require("../middleware/AuthUsers");
+
 router.get("/data", getData);
 router.get("/data/:id", getDataByid);
-router.post("/data", createData);
-router.patch("/data/:id", updateData);
-router.delete("/data/:id", deleteData);
+router.post("/data", VerifyUser, createData);
+router.patch("/data/:id", VerifyUser, updateData);
+router.delete("/data/:id", VerifyUser, deleteData);
 
 module.exports = router;

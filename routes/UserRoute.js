@@ -7,12 +7,14 @@ const {
   deleteUsers,
 } = require("../controller/UserController");
 
+const { VerifyUser } = require("../middleware/AuthUsers");
+
 const router = express.Router();
 
-router.get("/users", getUsers);
-router.get("/users/:id", getUsersByid);
+router.get("/users", VerifyUser, getUsers);
+router.get("/users/:id", VerifyUser, getUsersByid);
 router.post("/users", createUsers);
-router.patch("/users/:id", updateUsers);
-router.delete("/users/:id", deleteUsers);
+router.patch("/users/:id", VerifyUser, updateUsers);
+router.delete("/users/:id", VerifyUser, deleteUsers);
 
 module.exports = router;

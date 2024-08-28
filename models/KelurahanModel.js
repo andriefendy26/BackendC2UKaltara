@@ -14,5 +14,4 @@ const Kelurahan = db.define(
   }
 );
 
-
 module.exports = Kelurahan;

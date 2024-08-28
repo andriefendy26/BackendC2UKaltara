@@ -9,6 +9,7 @@ const {
 
 const router = express.Router();
 
+
 router.get("/kelurahan", getKelurahan);
 router.get("/kelurahan/:id", getKelurahanByid);
 router.post("/kelurahan", createKelurahan);
