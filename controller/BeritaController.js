@@ -97,7 +97,7 @@ const updateBerita = async (req, res) => {
     );
     return res.status(201).json({ msg: "Berita berhasil di perbarharui" });
   } catch (e) {
-    return res.status(401).json({ msg: e.message });
+    return res.status(41).json({ msg: e.message });
   }
 };
 

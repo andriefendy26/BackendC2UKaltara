@@ -5,6 +5,12 @@ const session = require("express-session");
 const db = require("./config/database");
 const fileUpload = require("express-fileupload");
 
+//intergrasi google
+const { google } = require("googleapis");
+const drive = google.drive("v2");
+const fs = require("fs");
+const gd_folder_id = "1ZxtedFg8CnJkXG8mECRPVbzm_gT0DKLl";
+
 require("dotenv").config();
 
 //route
@@ -37,7 +43,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173", "http://localhost:3000"],
+    origin: "http://localhost:5173",
   })
 );
 app.use(fileUpload());
@@ -52,6 +58,45 @@ app.use(AuthRoute);
 app.use(BeritaRoute);
 app.use(KelurahanRoute);
 
+// const upFile = async () => {
+//   try {
+//     const auth = new google.auth.GoogleAuth({
+//       keyFile: "./googledrive/c2u_apikey.json",
+//       scopes: ["https://www.googleapis.com/auth/drive"],
+//     });
+
+//     const driveServices = google.drive({
+//       version: "v3",
+//       auth,
+//     });
+
+//     const fileMetaData = {
+//       name: "gambassdasr",
+//       parents: [gd_folder_id],
+//     };
+
+//     const Media = {
+//       MimeType: "images/jpg",
+//       body: fs.createReadStream("./test.jpg"),
+//     };
+
+//     const response = await driveServices.files.create({
+//       resource: fileMetaData,
+//       media: Media,
+//       field: "id",
+//     });
+
+//     return response.data.id;
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
+// upFile().then((data) => {
+//   console.log(data);
+// });
+
+//https://drive.google.com/uc?export=view&id=1mI3OFx2nwhuolO56RpXaR-h6xeZ6Dqzi
 // store.sync();
 
 // Start the server

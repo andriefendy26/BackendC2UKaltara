@@ -15,6 +15,14 @@ const Logbook = db.define("tb_logbook", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  gambar: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  url: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   tanggal: {
     type: DataTypes.DATE,
     allowNull: false,
