@@ -5,12 +5,14 @@ const {
   createLogbook,
   updateLogbook,
   deleteLogbook,
-  getLogbookByKelid
+  getLogbookByKelid,
+  getTotalLogbookCount
 } = require("../controller/LogbookController");
 
 const router = express.Router();
 
 router.get("/Logbook", getLogbook);
+router.get("/Logbook/total", getTotalLogbookCount);
 router.get("/Logbook/:id", getLogbookByid);
 router.get("/Logbook/kelurahan/:id", getLogbookByKelid);
 router.post("/Logbook", createLogbook);

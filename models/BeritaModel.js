@@ -8,7 +8,7 @@ const Berita = db.define("tb_berita", {
     allowNull: false,
   },
   deskripsi: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(8200),
     allowNull: false,
   },
   jenis: {
@@ -32,8 +32,9 @@ const Berita = db.define("tb_berita", {
     allowNull: false,
   },
 });
+
 Berita.belongsTo(Kelurahan, { foreignKey: "kelurahanID" });
 
-// (async () => await db.sync())();
-// await db.sync();
+// (async () => await Berita.sync({force : true}))();
+// // await db.sync();
 module.exports = Berita;

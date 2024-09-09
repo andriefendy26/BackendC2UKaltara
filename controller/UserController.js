@@ -11,6 +11,23 @@ const Argon2 = require("argon2");
 //   return res.status(201).json({ status: "success", data: dataUser });
 // };
 
+const getTotalUserCount = async (req, res) => {
+  try {
+    // Count total logbook records
+    const totalCount = await Users.count();
+
+    // Respond with the total count
+    return res.status(200).json({
+      status: "success",
+      totalUsersCount: totalCount,
+    });
+  } catch (e) {
+    // Handle any errors that occur
+    console.error(e.message);
+    return res.status(500).json({ msg: "Terjadi kesalahan saat mengambil data total logbook" });
+  }
+};
+
 const getUsers = async (req, res) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 0;
@@ -217,4 +234,5 @@ module.exports = {
   createUsers,
   updateUsers,
   deleteUsers,
+  getTotalUserCount
 };

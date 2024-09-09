@@ -1,3 +1,5 @@
+const Kelurahan = require("../models/KelurahanModel");
+const Roles = require("../models/RolesModel");
 const Users = require("../models/UserModel");
 const Argon2 = require("argon2");
 
@@ -17,7 +19,7 @@ const Login = async (req, res) => {
     } else {
       return res.status(400).json({ msg: "Password salah" });
     }
-  } else {
+  } else { 
     return res.status(404).json({ msg: "user tidak ditemukan" });
   }
 };
@@ -38,6 +40,7 @@ const OnLogin = async (req, res) => {
   const user = await Users.findOne({
     attributes: ["nama", "email", "roleID", "kelurahanID"],
     where: { id: req.session.userId },
+    include : [Kelurahan, Roles]
   });
   if (!user) return res.status(400).json({ msg: "user tidak di temukan" });
   return res.status(200).json(user);

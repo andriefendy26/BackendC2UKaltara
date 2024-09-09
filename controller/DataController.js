@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, fn, col } = require("sequelize");
 const Datasampah = require("../models/DataSampahModel");
 const moment = require("moment-timezone");
 const Kelurahan = require("../models/KelurahanModel");
@@ -11,6 +11,59 @@ const Kelurahan = require("../models/KelurahanModel");
 //     return res.status(500).json({ status: error.message });
 //   }
 // };
+
+const getDataTotalByKelurahan = async (req, res) => {
+  const data = await Datasampah.findAll({
+    attributes: ["kelurahanID", [fn("SUM", col("totalsampah")), "totalSampah"]],
+    group: ["kelurahanID"], // Mengelompokkan berdasarkan kelurahanID
+    order: [["kelurahanID", "ASC"]], // Urutkan berdasarkan kelurahanID
+    include: [Kelurahan],
+  });
+  return res.status(200).json({ data: data });
+};
+
+const getDataLastWeek = async (req, res) => {
+  try {
+    // Menghitung tanggal 7 hari yang lalu dari tanggal saat ini
+    const startDate = moment().subtract(7, "days").startOf("day").toDate();
+    const endDate = moment().endOf("day").toDate();
+
+    // Mengambil data dari database
+    const data = await Datasampah.findAll({
+      attributes: [
+        "tanggal",
+        [fn("SUM", col("totalsampah")), "totalSampah"], // Menjumlahkan totalsampah
+      ],
+      where: {
+        tanggal: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+      group: ["tanggal"], // Mengelompokkan berdasarkan tanggal
+      order: [["tanggal", "ASC"]], // Urutkan berdasarkan tanggal jika diperlukan
+      limit: 7,
+    });
+
+    // Mengirimkan data sebagai response
+    return res.status(200).json({ data: data });
+  } catch (error) {
+    // Menangani error
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const getTotalData = async (req,res) => {
+  try {
+    const data = await Datasampah.findAll({
+      attributes: [
+        [fn("SUM", col("totalsampah")), "totalSampah"], // Menjumlahkan totalsampah
+      ],
+    });
+    return res.status(200).json({ data: data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
 
 const getData = async (req, res) => {
   const page = parseInt(req.query.page) || 0;
@@ -292,8 +345,11 @@ const deleteData = async (req, res) => {
 
 module.exports = {
   getData,
+  getDataLastWeek,
   getDataByid,
   createData,
   updateData,
   deleteData,
+  getDataTotalByKelurahan,
+  getTotalData
 };
