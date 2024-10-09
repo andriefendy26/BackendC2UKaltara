@@ -58,6 +58,31 @@ app.use(AuthRoute);
 app.use(BeritaRoute);
 app.use(KelurahanRoute);
 
+let token =
+  "EAAH3uufuMrwBO6NVZBuu5GWio1sScqn08ZBx7UakuiA3C5alSXo3yqokO5s1AZBZCfZAV2BzoQvj5qtqBvYhgQOGE6rQ7eLgCzwSkIvonKzExUSOLdQWQwBb8CxZCcopDGhbAltQrLZBWWggJ1Ysdc4Xgac0PtKZBP6aYuXeZB6QeHJZB6Nt7KfZCcrihsw";
+app.get("/api/media", async (req, res) => {
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/17841468430804430/tags?fields=owner,media_url,permalink,media_type,username,comments,like_count,id&access_token=${token}`
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+app.get("/api/profile", async (req, res) => {
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/17841468430804430?fields=biography,followers_count,follows_count,media_count,name,profile_picture_url,username&access_token=${token}`
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 // const upFile = async () => {
 //   try {
 //     const auth = new google.auth.GoogleAuth({
